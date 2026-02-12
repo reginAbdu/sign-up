@@ -8,4 +8,5 @@ export const WIZARD_HEADERS = {
     BUDGET: 'Do you know what your approximate budget is?',
     ESTIMATE_FOR: 'Who should I prepare this estimate for?',
     PHONE_NUMBER: 'What is your phone number?',
+    THANK_YOU: 'Thank you',
 };

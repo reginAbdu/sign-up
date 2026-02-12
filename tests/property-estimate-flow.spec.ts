@@ -158,7 +158,7 @@ test.describe('Complete Property Estimate Flow', () => {
     });
 
     await test.step('Fill in Phone number', async () => {
-      await estimatePage.getPhoneNumberInput().fill(randomPhoneNumber);
+      await estimatePage.getPhoneNumberInput().pressSequentially(randomPhoneNumber);
       await expect(estimatePage.getPhoneNumberInput()).toHaveValue(`+1${randomPhoneNumber}`);
     });
 
@@ -174,6 +174,7 @@ test.describe('Complete Property Estimate Flow', () => {
         if (await confirmBtn.isVisible()) {
           await confirmBtn.click({ timeout: 3000 });
         }
+        await expect(confirmBtn).toBeHidden();
       }
     });
 

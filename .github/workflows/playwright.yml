@@ -12,7 +12,6 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     container:
-      # ✅ Updated to match your local Playwright version
       image: mcr.microsoft.com/playwright:v1.58.2-jammy
 
     steps:
@@ -26,20 +25,31 @@ jobs:
         run: npm ci
 
       - name: Install Playwright browsers
-        # ✅ Ensures Chromium, Firefox, WebKit are installed inside Docker
         run: npx playwright install --with-deps
 
       - name: Run Playwright tests
         run: npx playwright test
         env:
           BASE_URL: ${{ secrets.BASE_URL }}
-          # Add other environment variables here if needed
-          # API_KEY: ${{ secrets.API_KEY }}
+          CI: true  # ensures headless mode in Playwright
 
-      - name: Upload Playwright report
+      - name: Generate Allure HTML report
+        run: |
+          npx allure generate allure-results --clean -o allure-report
+        continue-on-error: true  # ensures report generation doesn't fail workflow if tests failed
+
+      - name: Upload Allure results (raw)
         uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
+        if: ${{ always() }}
         with:
-          name: playwright-report
-          path: playwright-report/
+          name: allure-results
+          path: allure-results/
+          retention-days: 30
+
+      - name: Upload Allure HTML report (viewable)
+        uses: actions/upload-artifact@v4
+        if: ${{ always() }}
+        with:
+          name: allure-report
+          path: allure-report/
           retention-days: 30
