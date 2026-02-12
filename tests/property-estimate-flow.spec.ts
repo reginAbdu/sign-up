@@ -182,14 +182,17 @@ test.describe('Complete Property Estimate Flow', () => {
 
       if (leadId) {
         const { response: finalResp, json: finalJson } = await getLeadDetails(page, String(leadId), apiOrigin);
-        expect(finalResp.ok()).toBeTruthy();
+
+        expect.soft(finalResp.ok()).toBeTruthy();
         const status = (finalJson?.leadStatus || finalJson?.data?.leadStatus || '').toString().toLowerCase();
-        expect(status).toBe('submitted');
-        test.info().annotations.push({ type: 'lead-final-status', description: String(finalJson?.leadStatus || finalJson?.data?.leadStatus || '') });
+        expect.soft(status).toBe('submitted');
+
+        test.info().annotations.push({ type: 'lead-final-status', description: status });
       } else {
         test.info().annotations.push({ type: 'lead-final-status', description: 'no-lead-id' });
       }
     });
+
   });
 
 });

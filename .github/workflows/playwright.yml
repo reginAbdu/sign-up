@@ -12,7 +12,8 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.48.0-noble
+      # ✅ Updated to match your local Playwright version
+      image: mcr.microsoft.com/playwright:v1.58.2-jammy
 
     steps:
       - uses: actions/checkout@v4
@@ -24,10 +25,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install Playwright browsers
+        # ✅ Ensures Chromium, Firefox, WebKit are installed inside Docker
+        run: npx playwright install --with-deps
+
       - name: Run Playwright tests
         run: npx playwright test
         env:
           BASE_URL: ${{ secrets.BASE_URL }}
+          # Add other environment variables here if needed
+          # API_KEY: ${{ secrets.API_KEY }}
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4
