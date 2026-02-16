@@ -3,11 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "playwright test --headed",
-    "test:local": "NODE_ENV=development playwright test",
-    "test:staging": "NODE_ENV=staging playwright test",
-    "test:ci": "NODE_ENV=ci playwright test --reporter=json --reporter=html",
-    "test:env": "NODE_ENV=${ENVIRONMENT:-development} playwright test"
+    "test:preprod": "NODE_ENV=preprod playwright test tests/email-validation.spec.ts --debug",
+    "test:ci": "NODE_ENV=ci playwright test --reporter=allure-playwright",
+    "allure:report": "rm -rf allure-report allure-results && npx allure generate allure-results --clean -o allure-report && npx allure open allure-report"
   },
   "keywords": [],
   "author": "",
